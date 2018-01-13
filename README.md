@@ -1,10 +1,10 @@
 # MMM-mqtt
 
-This is an extension for the [MagicMirror²](https://github.com/MichMich/MagicMirror).  It provides the ability to subscribe to MQTT topics and display them.
+This is an extension for the [MagicMirror²](https://github.com/MichMich/MagicMirror).  It provides the ability to subscribe to MQTT topics and emit notifications to MM modules on messages received.
 
 ## Installation
 1. Ensure that you have the necessary libraries/clients for mqtt installed on the computer that will be running this extension.  (For example, running `sudo apt-get install mosquitto mosquitto-clients` on Debian-based distributions.)
-2. NOT YET... Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/BenGig/MMM-mqtt-dispatcher.git`. A new folder will appear, likely called `MMM-mqtt-dispatcher`.  Navigate into it.
+2. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/BenGig/MMM-mqtt-dispatcher.git`. A new folder will appear, likely called `MMM-mqtt-dispatcher`.  Navigate into it.
 3. Execute `npm install` to install the node dependencies.
 
 ## Using the module
@@ -29,9 +29,8 @@ The following options can be configured:
 | Option  | Description  |
 |---|---|
 | `mqttServer`  | Connection string for the server to connect to (e.g. `mqtt://localhost`) **See:** Server URL  |
-| `topic`  | MQTT Topic to subscribe to on the server (`sensors/temperature/livingroom`)  |
+| `subscriptions`  | MQTT Topics to subscribe to on the server, see below  |
 | `interval`  | Refresh interval, not including MQTT subscription deliveries. (default: `300000`)  |
-| `postText`  | Text to append after the data received from MQTT (default: `''`)  |
 
 ## Server URL
 The server URL can be configured with all options supported by [URL.parse](https://nodejs.org/api/url.html#url_url_strings_and_url_objects). The format used is
@@ -44,6 +43,27 @@ The server URL can be configured with all options supported by [URL.parse](https
 Supported protocols include:
 - mqtt
 - mqtts
+
+## Subscriptions
+This is an array with MQTT topics. When a topic is triggered, the value received will be matched against a list of possible values, paired with MM notifications. If a value matches, the notification will sent to MM modules listening for notifications. This example connects gesture sensor messages, sending "l" and "r", with [MMM-pages](https://github.com/edward-shen/MMM-pages):
+
+```
+   subscriptions: [
+     {
+       topic:        'set/eg/mirror/gesture',
+       notifications: [
+         {
+           value:        'l',
+           notification: 'PAGE_INCREMENT'
+         },
+         {
+           value:        'r',
+           notification: 'PAGE_DECREMENT'
+         }
+       ],
+     },
+   ],
+```
 
 ## Dependencies
 - [mqtt](https://www.npmjs.com/package/mqtt) (installed via `npm install`)

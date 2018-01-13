@@ -12,8 +12,9 @@ var mqtt = require('mqtt');
 
 module.exports = NodeHelper.create({
   start: function() {
-    console.log('MMM-mqtt started ...');
+    console.log('MMM-mqtt-dispatcher started ...');
     this.clients = [];
+    this.config = {};
   },
 
   connectMqtt: function(config) {
@@ -47,19 +48,20 @@ module.exports = NodeHelper.create({
       client = self.clients[config.mqttServer];
     }
 
-    if(config.mode !== 'send') {
-      client.subscribe(config.topic);
-
+    for (var i = 0; i < config.subscriptions.length; i++) {
+      client.subscribe(config.subscriptions[i].topic);
+      console.log("Subscribing: "+config.subscriptions[i].topic);
       client.on('message', function(topic, message) {
-        self.sendSocketNotification('MQTT_DATA', {'topic':topic, 'data':message.toString()});
+        console.log("msg: topic "+topic+", message: "+message.toString());
+        self.sendSocketNotification('MQTT_DISPATCH_DATA', {'topic':topic, 'data':message.toString()});
       });
     }
   },
 
   socketNotificationReceived: function(notification, payload) {
-    if (notification === 'MQTT_SERVER') {
+    if (notification === 'MQTT_DISPATCH_SERVER') {
       this.connectMqtt(payload);
-    } else if(notification == 'MQTT_SEND') {
+    } else if(notification == 'MQTT_DISPATCH_SEND') {
       var client = this.clients[payload.mqttServer];
       if(typeof client !== "undefined") {
         client.publish(payload.topic, JSON.stringify(payload.payload));
