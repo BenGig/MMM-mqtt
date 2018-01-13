@@ -2,9 +2,10 @@
 /* global Module */
 
 /* Magic Mirror
- * Module: MMM-mqtt
+ * Module: MMM-mqtt-dispatcher
  *
- * By Javier Ayala http://www.javierayala.com/
+ * By Bengt Giger
+ * Based on MMM-mqtt by Javier Ayala http://www.javierayala.com/
  * MIT Licensed.
  */
 
