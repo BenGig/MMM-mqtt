@@ -49,12 +49,13 @@ module.exports = NodeHelper.create({
     }
 
     for (var i = 0; i < config.subscriptions.length; i++) {
-      client.subscribe(config.subscriptions[i].topic);
-      console.log("Subscribing: "+config.subscriptions[i].topic);
-      client.on('message', function(topic, message) {
-        console.log("msg: topic "+topic+", message: "+message.toString());
-        self.sendSocketNotification('MQTT_DISPATCH_DATA', {'topic':topic, 'data':message.toString()});
-      });
+      if (! client.connected) {
+        client.subscribe(config.subscriptions[i].topic);
+        console.log("MQTT subscription: "+config.subscriptions[i].topic);
+        client.on('message', function(topic, message) {
+          self.sendSocketNotification('MQTT_DISPATCH_DATA', {'topic':topic, 'data':message.toString()});
+        });
+      }
     }
   },
 

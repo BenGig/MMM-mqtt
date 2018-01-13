@@ -59,11 +59,16 @@ This is an array with MQTT topics. When a topic is triggered, the value received
          {
            value:        'r',
            notification: 'PAGE_DECREMENT'
-         }
+         },
+         {
+           value:        '0',
+           notification: 'PAGE_CHANGED',
+           numeric:      true
        ],
      },
    ],
 ```
+Note the optional 'numeric' property: if a module insists on numerical values, you can force a conversion of the message. 
 
 ## Dependencies
 - [mqtt](https://www.npmjs.com/package/mqtt) (installed via `npm install`)

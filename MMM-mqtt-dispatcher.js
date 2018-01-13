@@ -61,15 +61,22 @@ Module.register('MMM-mqtt-dispatcher', {
   socketNotificationReceived: function(notification, payload) {
     if (notification === 'MQTT_DISPATCH_DATA') {
       if (this.config.debug){Log.log("Got message: topic "+payload.topic+", data:"+payload.data)};
+      // search topics
       for (var i = 0; i < this.config.subscriptions.length; i++) {
         if (this.config.debug){Log.log("Testing against "+this.config.subscriptions[i].topic)};
         if (payload.topic === this.config.subscriptions[i].topic){
           if (this.config.debug){Log.log("Matched.")};
+          // search notifications, compare message value
           for (var j = 0; j < this.config.subscriptions[i].notifications.length; j++) {
             if (this.config.debug){Log.log("Testing against "+this.config.subscriptions[i].notifications[j].value)};
             if (payload.data === this.config.subscriptions[i].notifications[j].value) {
               if (this.config.debug){Log.log("Matched.")};
-              this.sendNotification(this.config.subscriptions[i].notifications[j].notification, payload.data);
+              var data = payload.data;
+              // Some recipients insist on numerics, not strings
+              if (this.config.subscriptions[i].notifications[j].hasOwnProperty('numeric')) {
+                data = Number(payload.data);
+              }
+              this.sendNotification(this.config.subscriptions[i].notifications[j].notification, data);
               if (this.debug) {
                 this.mqttVal = "Sent "+this.config.subscriptions[i].notifications+" with arg "+payload.data;
               }
