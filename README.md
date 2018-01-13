@@ -4,7 +4,7 @@ This is an extension for the [MagicMirror²](https://github.com/MichMich/MagicMi
 
 ## Installation
 1. Ensure that you have the necessary libraries/clients for mqtt installed on the computer that will be running this extension.  (For example, running `sudo apt-get install mosquitto mosquitto-clients` on Debian-based distributions.)
-2. Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/javiergayala/MMM-mqtt.git`. A new folder will appear, likely called `MMM-mqtt`.  Navigate into it.
+2. NOT YET... Navigate into your MagicMirror's `modules` folder and execute `git clone https://github.com/BenGig/MMM-mqtt-dispatcher.git`. A new folder will appear, likely called `MMM-mqtt-dispatcher`.  Navigate into it.
 3. Execute `npm install` to install the node dependencies.
 
 ## Using the module
@@ -13,9 +13,8 @@ To use this module, add it to the modules array in the `config/config.js` file:
 ````javascript
 modules: [
 	{
-		module: 'MMM-mqtt',
-		position: 'top_right',	// This can be any of the regions. Best results in left or right regions.
-		header: 'Living Room Temperature', // This is optional
+		module: 'MMM-mqtt-dispatcher',
+		position: 'top_right',	// This can be any of the regions.
 		config: {
 			// See 'Configuration options' for more information.
 		}
@@ -30,13 +29,9 @@ The following options can be configured:
 | Option  | Description  |
 |---|---|
 | `mqttServer`  | Connection string for the server to connect to (e.g. `mqtt://localhost`) **See:** Server URL  |
-| `loadingText`  | Text to display while waiting for data to load  |
 | `topic`  | MQTT Topic to subscribe to on the server (`sensors/temperature/livingroom`)  |
-| `showTitle`  | Boolean to show/hide a title (default: `false`)  |
-| `title`  | Title to show if `showTitle` is `true`  |
 | `interval`  | Refresh interval, not including MQTT subscription deliveries. (default: `300000`)  |
 | `postText`  | Text to append after the data received from MQTT (default: `''`)  |
-| `mode` | Possible values: `send` or `receive` **default**
 
 ## Server URL
 The server URL can be configured with all options supported by [URL.parse](https://nodejs.org/api/url.html#url_url_strings_and_url_objects). The format used is
@@ -49,22 +44,6 @@ The server URL can be configured with all options supported by [URL.parse](https
 Supported protocols include:
 - mqtt
 - mqtts
-
-## Mode
-
-By default the module will receive MQTT messages from the configured topic and display these. MMM-mqtt can also be used to broadcast local MagicMirror² notifications from modules to an MQTT topic. A sending module doesn't have to be displayed. A sample minimal config for sending:
-
-```javascript
-{
-	module: "MMM-mqtt",
-	config: {
-		mqttServer: "mqtts://loclhost:8883",
-		topic: "home/living/magicmirror",
-		mode: "send"
-	}
-}
-```
-
 
 ## Dependencies
 - [mqtt](https://www.npmjs.com/package/mqtt) (installed via `npm install`)
