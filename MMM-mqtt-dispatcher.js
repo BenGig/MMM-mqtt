@@ -32,7 +32,7 @@ Module.register('MMM-mqtt-dispatcher', {
   },
 
   updateMqtt: function(self) {
-    self.sendSocketNotification('MQTT_DISPATCH_SERVER', { mqttServer: self.config.mqttServer, subscriptions: self.config.subscriptions});
+    self.sendSocketNotification('MQTT_DISPATCH_CONNECT', { mqttServer: self.config.mqttServer, subscriptions: self.config.subscriptions});
     setTimeout(self.updateMqtt, self.config.interval, self);
   },
 

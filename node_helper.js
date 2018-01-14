@@ -61,7 +61,7 @@ module.exports = NodeHelper.create({
   },
 
   socketNotificationReceived: function(notification, payload) {
-    if (notification === 'MQTT_DISPATCH_SERVER') {
+    if (notification === 'MQTT_DISPATCH_CONNECT') {
       this.connectMqtt(payload);
     } else if(notification == 'MQTT_DISPATCH_SEND') {
       var client = this.clients[payload.mqttServer];

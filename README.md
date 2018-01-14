@@ -1,6 +1,6 @@
 # MMM-mqtt
 
-This is an extension for the [MagicMirror²](https://github.com/MichMich/MagicMirror).  It provides the ability to subscribe to MQTT topics and emit notifications to MM modules on messages received.
+This is an extension for the [MagicMirror²](https://github.com/MichMich/MagicMirror).  It does not display any information on the screen, but provides the ability to subscribe to MQTT topics and emit notifications to MM modules on messages received.
 
 ## Installation
 1. Ensure that you have the necessary libraries/clients for mqtt installed on the computer that will be running this extension.  (For example, running `sudo apt-get install mosquitto mosquitto-clients` on Debian-based distributions.)
