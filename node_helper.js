@@ -22,7 +22,7 @@ module.exports = NodeHelper.create({
     var self = this;
     var client;
 
-    if(typeof self.clients[config.mqttServer] === "undefined") {
+    if(typeof self.clients[config.mqttServer] === "undefined" || self.clients[config.mqttServer].connected == false) {
       console.log("Creating new MQTT client for url: ", config.mqttServer);
       client = mqtt.connect(config.mqttServer);
       self.clients[config.mqttServer] = client;
